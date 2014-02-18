@@ -1,0 +1,67 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+.tab-a {
+    cursor: pointer;
+}
+
+#page {
+    margin: 0px;
+    padding: 0px;
+}
+
+#playground-html {
+    margin: 0px;
+    padding: 0px;
+    display: block;
+    overflow: auto;
+    background-color: #eee;
+}
+
+#editor-wrapper {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+#editor {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    display: block;
+    overflow: auto;
+}
+
+#editor #icon-menu {
+    position: absolute;
+    right: 15px;
+    top: 0px;    
+}
+ 
+#html {
+    position: absolute;
+    top: 42px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#css {
+    position: absolute;
+    top: 42px;
+    right: 0;
+    bottom: 0;
+    left: 0;    
+}
+
+#javascript {   
+    position: absolute;
+    top: 42px;
+    right: 0;
+    bottom: 0;
+    left: 0;    
+}

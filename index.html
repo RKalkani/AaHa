@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>AaHa</title>        
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />        
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
+        <link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+        <script type="text/javascript" src="js/jquery.js" ></script>
+        <script type="text/javascript" src="js/bootstrap.js" ></script>
+        <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+        <!--<script src="ace-builds/kitchen-sink/demo.js" type="text/javascript" charset="utf-8"></script>-->
+
+        <script>
+
+            var javascript;
+            var html;
+            var css;
+            var height;
+            var width;
+            var style;
+            var fontSize;
+            //var editorHeight; 
+            var zoom;
+            var isFullScreen;           
+
+            function csetWidthAndHeight() {
+
+                zoom = 0;
+                isFullScreen = 0;
+              //  console.log(isFullScreen);
+                height = $(window).height();
+                width = $(window).width();
+                style = { 'width': width, 'height': height };
+                $('#page').css(style);
+                style = { 'width': width, 'height': (height * 60) / 100 };
+                $('#playground-html').css(style);
+                style = { 'width': width, 'height': (height * 40) / 100 };
+                $('#editor').css(style);
+                //editorHeight =  (height * 40) / 100;
+            }
+
+            function ctabClick(id, a) {
+                $('#html').css('display', 'none');
+                $('#css').css('display', 'none');
+                $('#javascript').css('display', 'none');
+                $(id).css('display', 'block');
+                $('#editor .active').removeClass();
+                $(a).offsetParent().addClass('active');
+            }
+
+            
+            
+            function crun() {
+                var htmlText = html.getValue();
+                var jsText = javascript.getValue();
+                var cssText = css.getValue();
+
+                $('#playground-html').html(htmlText);
+                $('#playground-css').html(cssText);
+                $('#playground-javascript').html(jsText);
+
+            }
+
+            function cclear() {
+                if (confirm('Do you really want to clear text area?')) {
+                    html.setValue("");
+                    css.setValue("");
+                    javascript.setValue("");
+
+                    crun();
+                }
+            }
+
+            function cdown() {
+                zoom = 42 - (height * 40) / 100;                
+                $("#editor").animate({ 'width': width, 'height': '42px'}, "normal", "swing");
+                $("#playground-html").animate({ 'width': width, 'height': (height - 42) + 'px' }, "normal", "swing");
+                //$("#editor").animate({ 'bottom': ((height * 40) / 100 - 42) * -1 + 'px' }, "normal", "swing");
+            }
+
+            function cup() {
+                zoom = 0;
+                $("#playground-html").animate({ 'width': width, 'height': (height * 60) / 100 }, "normal", "swing");
+                $("#editor").animate({ 'width': width, 'height': (height * 40) / 100 }, "normal", "swing");
+                //$("#editor-wrapper").animate({ 'bottom': '0px' }, "normal", "swing");
+                //$('#editor-wrapper').css('bottom', '0px');
+            }            
+            
+            function czoomin() {
+                fontSize += 2;
+                html.setFontSize(fontSize);
+                javascript.setFontSize(fontSize);
+                css.setFontSize(fontSize);
+            }   
+            
+            function czoomout() {
+                fontSize -= 2;
+                html.setFontSize(fontSize);
+                javascript.setFontSize(fontSize);
+                css.setFontSize(fontSize);
+            }
+            
+            function cless() {                
+                var len = (height * 40) / 100 + zoom - 20;
+                
+                if( len > 42)
+                {
+                    //console.log(len);
+                    zoom -= 20;
+                    style = { 'width': width, 'height': (height - len) };
+                    $('#playground-html').css(style);
+                    style = { 'width': width, 'height': len };
+                    $('#editor').css(style);
+                }
+            }   
+            
+            function cmore() {                
+                var len = (height * 40) / 100 + zoom + 20;
+                
+                if( len < height)
+                {
+                   // console.log(len + "    " + height);
+                    zoom += 20;
+                    style = { 'width': width, 'height': (height - len) };
+                    $('#playground-html').css(style);
+                    style = { 'width': width, 'height': len };
+                    $('#editor').css(style);
+                }
+            } 
+            
+            function cfullscreen() {
+//                console.log('in startting of fullscreen' + isFullScreen);
+                
+                if( isFullScreen === 1)
+                {                    
+                    csetWidthAndHeight();
+                    $('#cfullscreen > span').removeClass('glyphicon-resize-small').addClass('glyphicon-resize-full');
+                }
+                else
+                {
+                    isFullScreen = 1;
+  //                  console.log(isFullScreen);
+                    $('#cfullscreen > span').removeClass('glyphicon-resize-full').addClass('glyphicon-resize-small');
+                    style = { 'width': width, 'height': 0 + 'px' };
+                    $('#playground-html').css(style);
+                    style = { 'width': width, 'height': (height) };
+                    $('#editor').css(style);
+                }
+            }
+
+            window.onload = function () {
+
+                //require("kitchen-sink/demo");
+                
+                fontSize = 12;
+                zoom = 0;
+
+                javascript = ace.edit("javascript");
+                javascript.setTheme("ace/theme/chrome");
+                javascript.getSession().setMode("ace/mode/javascript");
+
+                html = ace.edit("html");
+                html.setTheme("ace/theme/chrome");
+                html.getSession().setMode("ace/mode/html");
+
+                css = ace.edit("css");
+                css.setTheme("ace/theme/chrome");
+                css.getSession().setMode("ace/mode/css");
+
+                csetWidthAndHeight();
+                
+                $('#crun').bind('click', crun);
+                $('#cclear').bind('click', cclear);
+                $('#czoomin').bind('click', czoomin);
+                $('#czoomout').bind('click', czoomout);
+                $('#cless').bind('click', cless);
+                $('#cmore').bind('click', cmore);
+                $('#cup').bind('click', cup);
+                $('#cdown').bind('click', cdown);
+                $('#cfullscreen').bind('click', cfullscreen);
+                
+            };
+
+            $(window).resize(function () {
+
+                csetWidthAndHeight();
+            });
+
+        </script>
+
+        
+        <style id="playground-css"> </style>
+
+    </head>
+    <body>
+        <div class="container-fluid" id="page" style="position: relative;">
+            
+            <script id="playground-javascript"> </script>
+            
+            <div class="row" id="playground-html">
+                <h1 style="text-align: center; padding-top: 100px; font-size: 4em;">WelCome to AaHa</h1>
+            </div>
+
+            <!--<div id="editor-wrapper" style="position: absolute;">-->
+                <div class="row" id="editor">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a class="tab-a" onclick="ctabClick('#html', this)">HTML</a></li>
+                        <li><a class="tab-a" onclick="ctabClick('#css', this)">CSS</a></li>
+                        <li><a class="tab-a" onclick="ctabClick('#javascript', this)">Javascript</a></li>
+                    </ul>
+
+                    <div class="btn-toolbar" role="toolbar" id="icon-menu">
+                        <div class="btn-group">                            
+                            <button type="button" class="btn btn-default" id="crun">
+                                <span class="glyphicon glyphicon-play"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" id="cclear">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" id="czoomin">
+                                <span class="glyphicon glyphicon-zoom-in"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" id="czoomout">
+                                <span class="glyphicon glyphicon-zoom-out"></span>
+                            </button>                            
+                            <!--<button type="button" class="btn btn-default" id="cless">
+                                <span class="glyphicon glyphicon-hand-down"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" id="cmore">
+                                <span class="glyphicon glyphicon-hand-up"></span>
+                            </button>-->
+                            <button type="button" class="btn btn-default" id="cdown">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" id="cup">
+                                <span class="glyphicon glyphicon-chevron-up"></span>
+                            </button>                            
+                            <!--<button type="button" class="btn btn-default" id="cfullscreen">
+                                <span class="glyphicon glyphicon-resize-full"></span>
+                            </button>-->
+                        </div>
+                    </div>
+
+                    <div id="html" style="display: block;">&lt;!-- don't add html or body tag --&gt;
+
+                    </div>
+
+                    <div id="css" style="display: none;">/* Write css code */
+
+                    </div>
+
+                    <div id="javascript" style="display: none;">// Write javascript code
+
+                    </div>
+                </div>
+            <!--</div>-->                          
+        
+        </div>
+
+    </body>
+</html>
