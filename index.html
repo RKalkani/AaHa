@@ -11,6 +11,7 @@
         <script type="text/javascript" src="js/jquery.js" ></script>
         <script type="text/javascript" src="js/bootstrap.js" ></script>
         <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace-builds/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
         <!--<script src="ace-builds/kitchen-sink/demo.js" type="text/javascript" charset="utf-8"></script>-->
 
         <script>
@@ -173,6 +174,9 @@
             }
             
             function csetEditor() {
+                
+                ace.require("ace/ext/language_tools");
+                
                 javascript = ace.edit("javascript");
                 javascript.setTheme("ace/theme/chrome");
                 javascript.getSession().setMode("ace/mode/javascript");
@@ -183,7 +187,23 @@
 
                 css = ace.edit("css");
                 css.setTheme("ace/theme/chrome");
-                css.getSession().setMode("ace/mode/css");           
+                css.getSession().setMode("ace/mode/css");
+    
+                // enable autocompletion and snippets
+                javascript.setOptions({
+                    enableBasicAutocompletion: true,
+                    enableSnippets: true
+                });
+                
+                html.setOptions({
+                    enableBasicAutocompletion: true,
+                    enableSnippets: true
+                });
+
+                css.setOptions({
+                    enableBasicAutocompletion: true,
+                    enableSnippets: true
+                });
             }
             
             function cgetEditorValue() {
