@@ -39,7 +39,8 @@ html, body {
 #editor #icon-menu {
     position: absolute;
     right: 15px;
-    top: 0px;    
+    top: 0px;
+    height: 40px;
 }
 
 @media screen and (max-width: 500px) {
