@@ -52,10 +52,8 @@ html, body {
     	   z-index: 999;
 	}
 	
-	#editor {
-    		
-    		padding-bottom: 40px;
-    		
+	body {
+    		padding-top: 40px;
 	}
 	
 }
