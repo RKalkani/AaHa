@@ -31,7 +31,12 @@
             var htmlText;
             var jsText;
             var cssText;
-            var currentFocus;           
+            var currentFocus;
+            
+            function cplay() {
+                $('#AaHaAAudio')[0].load();
+                $('#AaHaAAudio')[0].play();
+            }      
 
             function csetWidthAndHeight() {
 
@@ -60,6 +65,7 @@
             
             function crun() {
                cgetEditorValue();
+               cplay();
 
                 $('#playground-javascript').html(jsText);
                 $('#playground-css').html(cssText);
@@ -239,7 +245,9 @@
                 $('#cmore').bind('click', cmore);
                 $('#cup').bind('click', cup);
                 $('#cdown').bind('click', cdown);
-                $('#cfullscreen').bind('click', cfullscreen);                
+                $('#cfullscreen').bind('click', cfullscreen);
+                
+                $('<audio style="display: none;" id="AaHaAAudio"><source src="sound/aaha.ogg" type="audio/ogg" preload="auto"><source src="sound/aaha.mp3" type="audio/mpeg" preload="auto"><source src="sound/aaha.wav" type="audio/wav" preload="auto"></audio>').appendTo('body');                              
                 
             };
 
@@ -254,7 +262,7 @@
         <style id="playground-css"> </style>
 
     </head>
-    <body>
+    <body>        
         <div class="container-fluid" id="page" style="position: relative;">
                        
             
